@@ -1,0 +1,39 @@
+CREATE TABLE pembeli (
+    ID INT PRIMARY KEY,
+    nama_Pembeli VARCHAR(255),
+    Alamat VARCHAR(255),
+    Email VARCHAR(255),
+    NoHP VARCHAR(15)
+);
+
+CREATE TABLE Pembeli (
+    ID INT PRIMARY KEY,
+    Nama VARCHAR(255),
+    Alamat VARCHAR(255),
+    Email VARCHAR(255),
+    NoHP VARCHAR(15)
+);
+
+
+CREATE TABLE Produk (
+    ID INT PRIMARY KEY,
+    ID_Penjual VARCHAR(255),
+    Nama_Barang VARCHAR(255),
+    Harga INT(20),
+    Stok INT(20),
+    FOREIGN KEY (ID_Penjual) REFERENCES Penjual(ID)
+);
+
+
+CREATE TABLE Transaksi (
+    ID_Transaksi INT PRIMARY KEY,
+    ID_Produk INT,
+    Tanggal_Transaksi DATE,
+    Banyak_Pembelian INT,
+    ID_Pembeli INT,
+    ID_Penjual INT,
+    FOREIGN KEY (ID_Produk) REFERENCES Produk(ID),
+    FOREIGN KEY (ID_Pembeli) REFERENCES Pembeli(ID),
+    FOREIGN KEY (ID_Penjual) REFERENCES Penjual(ID)
+);
+
