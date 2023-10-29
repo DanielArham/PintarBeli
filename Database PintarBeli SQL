@@ -1,39 +1,70 @@
-CREATE TABLE pembeli (
-    ID INT PRIMARY KEY,
-    nama_Pembeli VARCHAR(255),
-    Alamat VARCHAR(255),
-    Email VARCHAR(255),
-    NoHP VARCHAR(15)
-);
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`pintarbeli` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-CREATE TABLE Pembeli (
-    ID INT PRIMARY KEY,
-    Nama VARCHAR(255),
-    Alamat VARCHAR(255),
-    Email VARCHAR(255),
-    NoHP VARCHAR(15)
-);
+USE `pintarbeli`;
 
+/*Table structure for table `pembeli` */
 
-CREATE TABLE Produk (
-    ID INT PRIMARY KEY,
-    ID_Penjual VARCHAR(255),
-    Nama_Barang VARCHAR(255),
-    Harga INT(20),
-    Stok INT(20),
-    FOREIGN KEY (ID_Penjual) REFERENCES Penjual(ID)
-);
+DROP TABLE IF EXISTS `pembeli`;
 
+CREATE TABLE `pembeli` (
+  `ID` int(11) NOT NULL,
+  `Nama_Pembeli` varchar(255) DEFAULT NULL,
+  `Alamat` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `NoHP` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE Transaksi (
-    ID_Transaksi INT PRIMARY KEY,
-    ID_Produk INT,
-    Tanggal_Transaksi DATE,
-    Banyak_Pembelian INT,
-    ID_Pembeli INT,
-    ID_Penjual INT,
-    FOREIGN KEY (ID_Produk) REFERENCES Produk(ID),
-    FOREIGN KEY (ID_Pembeli) REFERENCES Pembeli(ID),
-    FOREIGN KEY (ID_Penjual) REFERENCES Penjual(ID)
-);
+/*Data for the table `pembeli` */
 
+/*Table structure for table `penjual` */
+
+DROP TABLE IF EXISTS `penjual`;
+
+CREATE TABLE `penjual` (
+  `ID` int(11) NOT NULL,
+  `Nama_Penjual` varchar(255) DEFAULT NULL,
+  `Alamat` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `NoHP` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `penjual` */
+
+/*Table structure for table `produk` */
+
+DROP TABLE IF EXISTS `produk`;
+
+CREATE TABLE `produk` (
+  `ID` int(11) NOT NULL,
+  `ID_Penjual` int(11) DEFAULT NULL,
+  `Nama_Barang` varchar(255) DEFAULT NULL,
+  `Harga` int(20) DEFAULT NULL,
+  `Stok` int(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_Penjual` (`ID_Penjual`),
+  CONSTRAINT `produk_ibfk_1` FOREIGN KEY (`ID_Penjual`) REFERENCES `penjual` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `produk` */
+
+/*Table structure for table `transaksi` */
+
+DROP TABLE IF EXISTS `transaksi`;
+
+CREATE TABLE `transaksi` (
+  `ID_Transaksi` int(11) NOT NULL,
+  `ID_Produk` int(11) DEFAULT NULL,
+  `Tanggal` date DEFAULT NULL,
+  `Banyak_Pembelian` int(11) DEFAULT NULL,
+  `ID_Pembeli` int(11) DEFAULT NULL,
+  `ID_Penjual` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_Transaksi`),
+  KEY `ID_Produk` (`ID_Produk`),
+  KEY `ID_Pembeli` (`ID_Pembeli`),
+  KEY `ID_Penjual` (`ID_Penjual`),
+  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`ID_Produk`) REFERENCES `produk` (`ID`),
+  CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`ID_Pembeli`) REFERENCES `pembeli` (`ID`),
+  CONSTRAINT `transaksi_ibfk_3` FOREIGN KEY (`ID_Penjual`) REFERENCES `penjual` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
